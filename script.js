@@ -2275,3 +2275,88 @@ function comprarMelhoria() {
         alert("Dinheiro insuficiente!");
     }
 }
+
+function temaEscuro() {
+
+    aplicarTemaEscuro();
+
+    const expira = new Date();
+    expira.setTime(expira.getTime() + (365 * 24 * 60 * 60 * 1000)); // 1 ano
+    document.cookie = `tema=escuro; expires=${expira.toUTCString()}; path=/`;
+}
+
+function temaClaro() {
+    aplicarTemaClaro();
+
+    const expira = new Date();
+    expira.setTime(expira.getTime() + (365 * 24 * 60 * 60 * 1000));
+    document.cookie = `tema=claro; expires=${expira.toUTCString()}; path=/`;
+}
+
+function aplicarTemaEscuro() {
+    document.body.style.background = 'linear-gradient(135deg, #0d2b2a, #1b1f2f)';
+
+    document.querySelectorAll('.container').forEach(c => {
+        c.style.background = '#1e1e2e';
+    });
+
+    document.querySelectorAll('p, h1, h2, h3, h4, h5, h6').forEach(t => {
+        t.style.color = 'whitesmoke';
+    });
+
+    const estatisticas = document.querySelector('#estatisticas');
+    if (estatisticas) {
+        estatisticas.style.background = '#263238';
+        estatisticas.style.border = '1px solid #37474f';
+    }
+
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.style.border = '1px solid #4db6ac';
+        el.style.backgroundColor = '#263238';        // corrigido o bug do #26323
+        el.style.color = '#e0f7fa';
+    });
+}
+
+function aplicarTemaClaro() {
+    document.body.style.background = 'linear-gradient(135deg, #41ccc7ff, #7687ceff)';
+
+    document.querySelectorAll('.container').forEach(c => {
+        c.style.background = 'whitesmoke';
+    });
+
+    document.querySelectorAll('p, h1, h2, h3, h4, h5, h6').forEach(t => {
+        t.style.color = '#1e1e2e';
+    });
+
+    document.body.style.color = '#1e1e2e';
+
+    const estatisticas = document.querySelector('#estatisticas');
+    if (estatisticas) {
+        estatisticas.style.background = '#a0a3a5ff';
+        estatisticas.style.border = '1px solid #616161ff';
+    }
+
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+        el.style.border = '1px solid #616161ff';
+        el.style.backgroundColor = '#a0a3a5ff';
+        el.style.color = '#1e1e2e';
+    });
+}
+
+function pegarTemaSalvo() {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [nome, valor] = cookie.trim().split('=');
+        if (nome === 'tema') return valor;
+    }
+    return null;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const tema = pegarTemaSalvo();
+
+    if (tema === 'escuro') {
+        aplicarTemaClaro();
+    } else {
+        aplicarTemaEscuro()
+}})
